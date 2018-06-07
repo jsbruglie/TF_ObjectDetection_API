@@ -20,6 +20,6 @@ do
 		--img_ext jpg \
 		--in_img_dir ${base_dir}/${chunk}/images \
 		--in_xml_dir ${base_dir}/${chunk}/annotations \
-		--out_csv ${out_dir}/${chunk}/test.csv \
+		--out_csv ${out_dir}/${chunk}/${chunk}.csv \
 		--out_img_dir ${out_dir}/${chunk}/images_resize
 done
