@@ -1,3 +1,5 @@
+#!/usr/bin/env python2
+
 # Adapted from
 # https://github.com/datitran/raccoon_dataset/blob/master/generate_tfrecord.py
 
@@ -17,11 +19,10 @@ from collections import namedtuple
 tf.logging.set_verbosity(tf.logging.INFO)
 
 flags = tf.app.flags
-flags.DEFINE_string('data_path', '', 'where to save train.record')
+flags.DEFINE_string('filename', '', 'output file name')
+flags.DEFINE_string('data_path', '', 'where to save output.record')
 flags.DEFINE_string('images_path', '', 'path to resized images folder')
 flags.DEFINE_string('csv_path', '', 'path to csv bounding boxes')
-
-
 FLAGS = flags.FLAGS
 
 # Add more class labels as needed, make sure to start at 1
@@ -83,8 +84,8 @@ def create_tf_example(group, path):
 
 
 def main(_):
-#    for i in ['test', 'train']:
-  writer = tf.python_io.TFRecordWriter(os.path.join(FLAGS.data_path,'train.record'))
+  output_path = os.path.join(FLAGS.data_path, FLAGS.filename + '.record')
+  writer = tf.python_io.TFRecordWriter(output_path)
   path = FLAGS.images_path
   examples = pd.read_csv(FLAGS.csv_path)
   grouped = split(examples, 'filename')
@@ -94,6 +95,6 @@ def main(_):
   writer.close()
   print('Successfully created the train TFRecords')
 
-
 if __name__ == '__main__':
   tf.app.run()
+
