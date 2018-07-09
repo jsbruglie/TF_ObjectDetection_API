@@ -23,8 +23,8 @@ tf.logging.set_verbosity(tf.logging.INFO)
 
 flags = tf.app.flags
 flags.DEFINE_string('images_path', '', 'path to resized test images folder')
+flags.DEFINE_string('ckpt_path', '', 'path to network frozen graph')
 flags.DEFINE_string('save_path', '', 'path to save infered bounding boxes')
-
 
 FLAGS = flags.FLAGS
 
@@ -34,11 +34,11 @@ def load_image_into_numpy_array(image):
       (im_height, im_width, 3)).astype(np.uint8)
 
 def main(_):
-#    for i in ['test', 'train']:
-  path_to_ckpt = 'object_detection_graph/frozen_inference_graph.pb'
-  path_to_labels = 'data/label_map.pbtxt'
+
+  path_to_ckpt = FLAGS.ckpt_path
+  path_to_labels = 'config/label_map.pbtxt'
   num_classes = 3
-  path_to_test_images_dir= FLAGS.images_path
+  path_to_test_images_dir = FLAGS.images_path
   test_images_path = os.listdir(path_to_test_images_dir)
   img_size = (12,12)
   
@@ -67,13 +67,13 @@ def main(_):
             [detection_boxes, detection_scores, detection_classes, num_detections],
             feed_dict={image_tensor: image_np_expanded})
 
-      width=1920
-      height=1080
+      width=960
+      height=540
       #NEW
 
-      font = cv2.FONT_HERSHEY_PLAIN
-      fontsize=2
-      fontweight=2
+      font = cv2.FONT_HERSHEY_DUPLEX
+      fontsize=1
+      fontweight=1
       #img = cv2.imread(full_path,cv2.IMREAD_COLOR)
       classes_text= np.squeeze(classes).astype(np.int32)
       #print(classes_text)
@@ -89,19 +89,23 @@ def main(_):
 
         if classes_text[i]==1:
           class_='cylinder'
-          color=(0,255,0)
+          color=(5,15,202)
         elif classes_text[i]==2:
           class_='sphere'
-          color=(255,0,0)
+          color=(0,128,0)
         elif classes_text[i]==3:
           class_='box'
-          color=(0,0,255)
-        cv2.rectangle(image_np,(int(xmin*width),int(ymin*height)),(int(xmax*width),int(ymax*height)),color,2)
-        cv2.putText(image_np, class_+"("+score+")", (int(xmin*width), int(ymin*height-4)), font, fontsize, color, fontweight, cv2.LINE_AA)
+          color=(255,0,0)
+        cv2.rectangle(image_np,(int(xmin*width),int(ymin*height)),
+		(int(xmax*width),int(ymax*height)),color,2)
+
+        cv2.putText(image_np, class_+"("+score+")", (int(xmin*width), int(ymin*height-8)),
+		font, fontsize, color, fontweight, cv2.LINE_AA)
       #cv2.imshow('image',image_np)
       #cv2.waitKey(0)
       #cv2.destroyAllWindows()
-      cv2.imwrite(os.path.join(FLAGS.save_path,image_path).replace('test','new_test'),image_np)
+      cv2.imwrite(os.path.join(FLAGS.save_path,image_path).replace('test','new_test'),
+           cv2.cvtColor(image_np, cv2.COLOR_RGB2BGR))
 
 
       #ENDNEW
