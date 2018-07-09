@@ -6,13 +6,11 @@ base_dir=$1
 out_dir=$2
 # Dataset chunk names
 declare -a chunks=(
-	"base"
-	"camera"
-	"chess"
-	"flat"
-	"gradient"
-	"light" 
-	"perlin")
+	"sim_no_camera_base"
+	"sim_no_camera_chess"
+	"sim_no_camera_flat"
+	"sim_no_camera_gradient"
+	"sim_no_camera_perlin")
 
 for chunk in "${chunks[@]}"
 do
