@@ -1,16 +1,31 @@
-models*
+# Images
 images/*.png
 images/*.jpg
-*.py[cod]
-data/train.record
 
+# Jupyter notebook checkpoints
 .ipynb_checkpoints
+
+# Models
 ssd_mobilenet_v1_coco*
-inference_results/*.tfrecord*
-object_detection_graph/*
-train_dir/*
-faster_rcnn_resnet50_lowproposals_coco_2017_11_08*
 ssd_mobilenet_v1_coco_11_06_2017*
-validation_dir/*
+faster_rcnn_resnet50_lowproposals_coco_2017_11_08*
 mobilenet/*
+models*
+*.py[cod]
+
+# TF Records
+inference_results/*.tfrecord*
+
+# Output
 data/*
+train_dir/*
+train/*
+eval/*
+validation_dir/*
+object_detection_graph/*
+inference_graph/*
+inference_results/*
+
+# Configurations
+accv2018/*
+!accv2018/config
